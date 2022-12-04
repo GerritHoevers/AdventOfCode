@@ -1,6 +1,6 @@
 # https://adventofcode.com/2022/day/1
 
-with open('./input.txt', 'r') as f:
+with open('input.txt', 'r') as f:
     text = f.read()
 
 deers = [

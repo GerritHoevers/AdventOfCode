@@ -3,10 +3,6 @@
 with open('./input.txt', 'r') as f:
     text = f.read()
 
-deers = []
-
-
-'''
 deers = [
     sum([
         int(cal)
@@ -15,7 +11,6 @@ deers = [
     ])
     for deer in text.split('\n\n')
 ]
-'''
 
 #print(deers)
 #print(sorted(deers))

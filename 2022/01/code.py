@@ -1,24 +1,39 @@
-# https://adventofcode.com/2022/day/1
+import pathlib
+import sys
 
-with open('./input.txt', 'r') as f:
-    text = f.read()
 
-deers = [
+def parse(puzzle_input):
+    """Parse input"""
+    data = [
     sum([
         int(cal)
         for cal in deer.split('\n')
         if cal != ''
     ])
-    for deer in text.split('\n\n')
-]
+    for deer in puzzle_input.split('\n\n')
+    ]   
+    return data
 
-#print(deers)
-#print(sorted(deers))
+def part1(data):
+    """Solve part 1"""
+    return max(data)
 
-# Part 1
-max_calories = max(deers)
-print(f'Part 1 : {max_calories}')
+def part2(data):
+    """Solve part 2"""
+    return sum(sorted(data)[-3:])
 
-# Part 2
-sum_of_top3_calories = sum(sorted(deers)[-3:])
-print(f'Part 2 : {sum_of_top3_calories}')
+def solve(puzzle_input):
+    """Solve the puzzle for the given input"""
+    data = parse(puzzle_input)
+    solution1 = part1(data)
+    solution2 = part2(data)
+
+    return solution1, solution2
+
+
+if __name__ == "__main__":
+    for path in sys.argv[1:]:
+        print(f"{path}:")
+        puzzle_input = pathlib.Path(path).read_text().strip()
+        solutions = solve(puzzle_input)
+        print("\n".join(str(solution) for solution in solutions))

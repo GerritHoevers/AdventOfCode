@@ -4,7 +4,7 @@ import sys
 
 def parse(puzzle_input):
     """Parse input"""
-    return [int(line) for line in puzzle_input.split()]
+    return [line for line in puzzle_input.split('')]
 
 def part1(data):
     """Solve part 1"""

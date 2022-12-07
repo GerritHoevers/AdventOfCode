@@ -4,11 +4,11 @@ import sys
 
 def parse(puzzle_input):
     """Parse input"""
-    return [line for line in puzzle_input.split('')]
+    return [int(mass) for mass in puzzle_input.split('\n')]
 
 def part1(data):
     """Solve part 1"""
-    return sum(mass//3 - 2 for mass in data)     
+    return sum([mass // 3 - 2 for mass in data])
 
 def part2(data):
     """Solve part 2"""
@@ -24,8 +24,8 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    for path in sys.argv[1:]:
-        print(f"{path}:")
-        puzzle_input = pathlib.Path(path).read_text().strip()
-        solutions = solve(puzzle_input)
-        print("\n".join(str(solution) for solution in solutions))
+    #for path in sys.argv[1:]:
+    #    print(f"{path}:")
+    puzzle_input = pathlib.Path("input.txt").read_text().strip()
+    solutions = solve(puzzle_input)
+    print("\n".join(str(solution) for solution in solutions))

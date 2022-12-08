@@ -1,6 +1,11 @@
 import pathlib
 import sys
 
+def priority(i):
+        if ord(i) < 91: #upper case
+            return ord(i)-38
+        else: #lower case
+            return ord(i)-96
 
 def parse(puzzle_input):
     """Parse input"""
@@ -9,18 +14,11 @@ def parse(puzzle_input):
 def part1(data):
     """Solve part 1"""
 
-    def priority(i):
-        if ord(i) < 91: #upper case
-            return ord(i)-38
-        else: #lower case
-            return ord(i)-96
-
-    num = 0
+    score = 0
     for text in data:
-        num += 1
         l = int(len(text))
         l2 = int(l/2)
-        text1 = text[0:l2-1]
+        text1 = text[0:l2]
         text2 = text[l2:l]
         
         break_loop = False
@@ -30,11 +28,11 @@ def part1(data):
                     score += priority(j)
                     break_loop = True
                     break
-            if break_loop:
+            if break_loop == True:
                 break
         #i is the character we're looking for
         
-        print(text, num, i, priority(i), score)
+        print(text, i, priority(i), score)
       
     return score
 

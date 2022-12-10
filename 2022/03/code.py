@@ -1,5 +1,6 @@
 import pathlib
 import sys
+from itertools import islice
 
 def priority(i):
         if ord(i) < 91: #upper case
@@ -39,6 +40,29 @@ def part1(data):
 def part2(data):
     """Solve part 2"""
 
+    score = 0
+    num_of_sets = len(data) // 3
+    print("number of sets: ", num_of_sets)
+    for i in range(0, num_of_sets):
+        list_of_three = [x.strip() for x in islice(data, i*3, i*3+3)]
+        #print(list_of_three)
+        
+        break_loop = False
+        for i in list_of_three[0]:
+            for j in list_of_three[1]:
+                for k in list_of_three[2]:
+                    if i==j and j==k:
+                        score += priority(k)
+                        break_loop = True
+                        break
+                if break_loop == True:
+                    break
+            if break_loop == True:
+                break
+
+        print(list_of_three, i, priority(i), score)
+
+    return score
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""

@@ -1,3 +1,5 @@
+# --- Day 2: Rock Paper Scissors ---
+
 import pathlib
 import sys
 

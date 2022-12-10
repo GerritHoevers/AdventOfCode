@@ -1,3 +1,5 @@
+# --- Day 1: Calorie Counting ---
+
 import pathlib
 import sys
 

@@ -3,21 +3,36 @@
 import pathlib
 import sys
 
-staples = 9
+staples = 3
 
 def parse(puzzle_input):
     """Parse input"""
-    #data = [['Z', 'N'], ['M', 'C', 'D'], ['P'], [1,2,1], [3,1,3], [2,2,1], [1,1,2]]
-    
+    data = []
+    moves = []
+    for line in puzzle_input.split('\n'):
+        #print(line, len(line))
+        index = 0
+        row = 0
+        symbol = line[index+1]
+        if symbol !=1:
+            # line contains crate data
+            while index+3 < len(line) and symbol != ' ':
+                print("index: ", index, "symbol: ", symbol, "row: ", row)
+                data[row].append(symbol)
+                index += 4
+                row += 1
+            else:
+                break
 
-    return data
+    #data = [['Z', 'N'], ['M', 'C', 'D'], ['P'], [1,2,1], [3,1,3], [2,2,1], [1,1,2]]
+    print(data)
+    return data, moves
 
 def part1(data):
     """Solve part 1"""
     rows = []
     for i in range(0, staples):
         rows.append(data[i]) 
-    print(rows)    
     moves = []
     for i in range(staples, len(data)):
         moves.append(data[i]) 

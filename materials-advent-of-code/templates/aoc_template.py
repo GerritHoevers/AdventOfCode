@@ -8,6 +8,7 @@ def parse(puzzle_input):
 
 def part1(data):
     """Solve part 1"""
+    print("\n\nsolving part 1 ...")
 
 
 def part2(data):
@@ -16,6 +17,7 @@ def part2(data):
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
+    print("\n\nsolving part 2 ...")
     data = parse(puzzle_input)
     solution1 = part1(data)
     solution2 = part2(data)

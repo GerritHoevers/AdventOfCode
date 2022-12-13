@@ -1,19 +1,28 @@
+#--- Day 7: No Space Left On Device ---
+
 import pathlib
 import sys
 
 
 def parse(puzzle_input):
     """Parse input"""
-
+    return [text for text in puzzle_input.split('\n')]
 
 def part1(data):
     """Solve part 1"""
     print("\n\nsolving part 1 ...")
+    dirs = 0
+    for line in data:
+        if line[0:3] == "dir":
+            dirs += 1
+            print(dirs, line)
 
+    return      
 
 def part2(data):
     """Solve part 2"""
     print("\n\nsolving part 2 ...")
+
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""

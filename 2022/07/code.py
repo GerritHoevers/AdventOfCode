@@ -29,6 +29,26 @@ def parse(puzzle_input):
 def part1(data):
     """Solve part 1"""
     print("\n\nsolving part 1 ...")
+    root = Folder('/', parent=None)
+    del data[0:2]
+    current_node = root
+    for line in data[0:4]:
+        if line[0] != '$':
+            if line[0:3] == 'dir':
+                # a directory
+                values = line.split(' ')
+                name = values[1]
+                folder = Folder(name, parent=current_node)
+                current_node.children.append(folder)
+            else:
+                # a file
+                values = line.split(' ')
+                size = int(values[0])
+                name = values[1]
+                file = File(size, name, current_node)
+                current_node.children.append(file)
+
+    """
     Folder_e = Folder('e', 'a')
     files = [ File(584, 'i', 'e') ]
     for file in files:
@@ -52,6 +72,7 @@ def part1(data):
         root.children.append(file)
     root.children.append(Folder_a)
     root.children.append(Folder_d)
+    """
 
     print("size of root: ", root.get_size())
 

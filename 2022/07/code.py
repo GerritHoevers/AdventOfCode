@@ -12,7 +12,6 @@ class Folder:
     def get_size(self):
         return sum([child.get_size() for child in self.children])
 
-
 class File:
     def __init__(self, size, filename, parent):
         self.size = size
@@ -24,73 +23,84 @@ class File:
 
 def parse(puzzle_input):
     """Parse input"""
-    return [text for text in puzzle_input.split('\n')]
+    data = [text for text in puzzle_input.split('\n')]
 
-def part1(data):
+    #create folder- and filestructure
+    nodes = [] #list of all nodes
+    root = Folder('/', parent=None)
+    nodes.append(root)
+    current_node = root
+    line_number = 1 #skip line_number 0, it contains "$ cd /"
+    
+    while line_number < len(data):
+        values = data[line_number].split(' ')
+        #the first value is "ls" or "cd"
+        if values[1] == 'ls':
+            #the command is 'ls', what follows are zero or more lines with the content of current_node
+            line_number += 1
+            while line_number < len(data):
+                #not reaching the end of the data
+                values = data[line_number].split(' ')
+                if values[0] == '$':
+                    #no items in this folder, return to upper while loop
+                    break
+                else:
+                    if values[0] == 'dir':
+                        #a new dir
+                        name = values[1]
+                        folder = Folder(name, parent=current_node)
+                        current_node.children.append(folder)
+                        nodes.append(folder)
+                    else:
+                        #a new file
+                        size = int(values[0])
+                        name = values[1]
+                        file = File(size, name, current_node)
+                        current_node.children.append(file)
+                line_number += 1
+        else: 
+            #command is 'cd', second value gives the name of the new dir, or '..' for shift ip
+            dirname = values[2]
+            if dirname == '..':
+                #shft one dir up
+                current_node = current_node.parent
+            else:
+                #look in children of current_node for the right subdirectory
+                for item in current_node.children:
+                    if type(item) == Folder:
+                        if item.dirname == dirname:
+                            #change current_node to this directory
+                            current_node = item
+            line_number += 1
+
+    return nodes
+
+def part1(nodes):
     """Solve part 1"""
     print("\n\nsolving part 1 ...")
-    root = Folder('/', parent=None)
-    del data[0:2]
-    current_node = root
-    for line in data[0:4]:
-        if line[0] != '$':
-            if line[0:3] == 'dir':
-                # a directory
-                values = line.split(' ')
-                name = values[1]
-                folder = Folder(name, parent=current_node)
-                current_node.children.append(folder)
-            else:
-                # a file
-                values = line.split(' ')
-                size = int(values[0])
-                name = values[1]
-                file = File(size, name, current_node)
-                current_node.children.append(file)
-
-    """
-    Folder_e = Folder('e', 'a')
-    files = [ File(584, 'i', 'e') ]
-    for file in files:
-        Folder_e.children.append(file)
-
-    Folder_a = Folder('a', '/')
-    files = [ File(29116, 'f', 'a'), File(2557, 'g', 'a'),  File(62596, 'h.lst', 'a') ]
-    for file in files:
-        Folder_a.children.append(file)
-    Folder_a.children.append(Folder_e)
     
-    files =  [ File(4060174, 'j', 'd'), File(8033020, 'd.log', 'd'), 
-        File(5626152, 'd.ext', 'd'), File(7214296, 'k', 'd') ]
-    Folder_d = Folder( 'd', '/')
-    for file in files:
-        Folder_d.children.append(file)
-
-    files =  [ File(14848514, 'b.txt', '/'), File(8504156, 'c.dat', '/') ]
-    root = Folder("/", parent=None)
-    for file in files:
-        root.children.append(file)
-    root.children.append(Folder_a)
-    root.children.append(Folder_d)
-    """
-
-    print("size of root: ", root.get_size())
-
-    i = 0
-    for child in root.children:
-        i += 1
-        if type(child) == Folder:
-            print("child nr ", i, " dir: ", child.dirname, " size: ", child.get_size())
-        else:
-            print("child nr ", i, " file: ", child.filename, " size: ", child.get_size())
-
-        
-    return      
-
-def part2(data):
+    sum = 0
+    for node in nodes:
+        size = node.get_size()
+        if size <= 100000:
+            sum += size
+    return sum
+    
+def part2(nodes):
     """Solve part 2"""
     print("\n\nsolving part 2 ...")
 
+    total_used = nodes[0].get_size()
+    free = 70000000 - total_used
+
+    min_size = 70000000
+    for node in nodes:
+        size = node.get_size()
+        if free + size >= 30000000:
+            if size < min_size:
+                min_size = size
+
+    return min_size
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""

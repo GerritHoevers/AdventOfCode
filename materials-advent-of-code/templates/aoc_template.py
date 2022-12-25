@@ -10,11 +10,15 @@ def part1(data):
     """Solve part 1"""
     print("\n\nsolving part 1 ...")
 
+    return
 
 def part2(data):
     """Solve part 2"""
     print("\n\nsolving part 2 ...")
 
+
+    return
+    
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
     data = parse(puzzle_input)

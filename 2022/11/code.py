@@ -4,25 +4,64 @@ import pathlib
 import sys
 
 class Monkey:
-    def __init__(self, number):
-        self.items = []
-        self.test_number = number
-
-    def get_size(self):
-        return sum([child.get_size() for child in self.children])
-
-
+    def __init__(self, items, func, divisor, pass_if_true, pass_if_false):
+        self.inspections = 0
+        self.items = items
+        self.func = func
+        self.divisor = divisor
+        self.pass_if_true = pass_if_true
+        self.pass_if_false = pass_if_false
 
 def parse(puzzle_input):
     """Parse input"""
+
+    return [text for text in puzzle_input.split('\n')]
 
 
 def part1(data):
     """Solve part 1"""
     print("\nsolving part 1 ...")
 
+    #read in monkey data
+    monkeys = []
+    line_nr = 1
+    while line_nr < len(data):
+        text = data[line_nr]
+        items = [ int(i) for i in (text[17:].split(",")) ]
+        line_nr += 1
+        text = data[line_nr]
+        func = text[18:]
+        line_nr += 1
+        text = data[line_nr]
+        divisor = int(text[21:])
+        line_nr += 1
+        text = data[line_nr]
+        pass_if_true = int(text[29:])
+        line_nr += 1
+        text = data[line_nr]
+        pass_if_false = int(text[30:])
 
+        monkey = Monkey(items, func, divisor, pass_if_true, pass_if_false)
+        monkeys.append(monkey)
 
+        line_nr += 3
+
+    for round in range(20):
+        for monkey in monkeys:
+            for item in monkey.items:
+                monkey.inspections += 1
+                old = item
+                new = (eval(monkey.func) // 3)
+                if new % monkey.divisor == 0:
+                    new_monkey = monkey.pass_if_true
+                else:
+                    new_monkey = monkey.pass_if_false
+                #print("item ", old, "changed to ", new, "and passed to monkey ", new_monkey)
+                monkeys[new_monkey].items.append(new)
+            monkey.items = []
+
+    for monkey in monkeys:
+        print(monkey.inspections)
 
     return
 

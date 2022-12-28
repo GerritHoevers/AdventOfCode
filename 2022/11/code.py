@@ -47,6 +47,7 @@ def part1(data):
         line_nr += 3
 
     for round in range(20):
+        print("round: ", round+1)
         for monkey in monkeys:
             for item in monkey.items:
                 monkey.inspections += 1
@@ -60,15 +61,66 @@ def part1(data):
                 monkeys[new_monkey].items.append(new)
             monkey.items = []
 
+    list_of_inspections = []
     for monkey in monkeys:
-        print(monkey.inspections)
+        num = monkey.inspections
+        list_of_inspections.append(num)
+    list_of_inspections.sort(reverse=True)
+    print(list_of_inspections)
 
-    return
+    return list_of_inspections[0] * list_of_inspections[1]
 
 def part2(data):
     """Solve part 2"""
     print("\nsolving part 2 ...")
 
+#read in monkey data
+    monkeys = []
+    line_nr = 1
+    while line_nr < len(data):
+        text = data[line_nr]
+        items = [ int(i) for i in (text[17:].split(",")) ]
+        line_nr += 1
+        text = data[line_nr]
+        func = text[18:]
+        line_nr += 1
+        text = data[line_nr]
+        divisor = int(text[21:])
+        line_nr += 1
+        text = data[line_nr]
+        pass_if_true = int(text[29:])
+        line_nr += 1
+        text = data[line_nr]
+        pass_if_false = int(text[30:])
+
+        monkey = Monkey(items, func, divisor, pass_if_true, pass_if_false)
+        monkeys.append(monkey)
+
+        line_nr += 3
+
+    for round in range(10000):
+        print("round: ", round+1)
+        for monkey in monkeys:
+            for item in monkey.items:
+                monkey.inspections += 1
+                old = item
+                new = eval(monkey.func)
+                if new % monkey.divisor == 0:
+                    new_monkey = monkey.pass_if_true
+                else:
+                    new_monkey = monkey.pass_if_false
+                #print("item ", old, "changed to ", new, "and passed to monkey ", new_monkey)
+                monkeys[new_monkey].items.append(new)
+            monkey.items = []
+
+    list_of_inspections = []
+    for monkey in monkeys:
+        num = monkey.inspections
+        list_of_inspections.append(num)
+    list_of_inspections.sort(reverse=True)
+    print(list_of_inspections)
+
+    return list_of_inspections[0] * list_of_inspections[1]
 
     return
     

@@ -2,6 +2,7 @@
 
 import pathlib
 import sys
+from datetime import datetime
 
 class Monkey:
     def __init__(self, items, func, divisor, pass_if_true, pass_if_false):
@@ -17,7 +18,6 @@ def parse(puzzle_input):
 
     return [text for text in puzzle_input.split('\n')]
 
-
 def part1(data):
     """Solve part 1"""
     print("\nsolving part 1 ...")
@@ -30,7 +30,7 @@ def part1(data):
         items = [ int(i) for i in (text[17:].split(",")) ]
         line_nr += 1
         text = data[line_nr]
-        func = text[18:]
+        func = text[19:]
         line_nr += 1
         text = data[line_nr]
         divisor = int(text[21:])
@@ -57,7 +57,6 @@ def part1(data):
                     new_monkey = monkey.pass_if_true
                 else:
                     new_monkey = monkey.pass_if_false
-                #print("item ", old, "changed to ", new, "and passed to monkey ", new_monkey)
                 monkeys[new_monkey].items.append(new)
             monkey.items = []
 
@@ -82,7 +81,7 @@ def part2(data):
         items = [ int(i) for i in (text[17:].split(",")) ]
         line_nr += 1
         text = data[line_nr]
-        func = text[18:]
+        func = text[19:]
         line_nr += 1
         text = data[line_nr]
         divisor = int(text[21:])
@@ -98,20 +97,29 @@ def part2(data):
 
         line_nr += 3
 
-    for round in range(10000):
+    for round in range(1000):
         print("round: ", round+1)
         for monkey in monkeys:
-            print("items: ", monkey.items)
+            #print("items: ", monkey.items)
             for item in monkey.items:
                 monkey.inspections += 1
                 old = item
                 new = eval(monkey.func)
-                if new % monkey.divisor == 0:
-                    new_monkey = monkey.pass_if_true
+                div = monkey.divisor
+                if monkey.func == "old * old":
+                    temp = old % div
+                    if (temp * temp) % div == 0:
+                        new_monkey = monkey.pass_if_true
+                    else:
+                        new_monkey = monkey.pass_if_false
                 else:
-                    new_monkey = monkey.pass_if_false
-                #print("item ", old, "changed to ", new, "and passed to monkey ", new_monkey)
+                    if new % div == 0:
+                        new_monkey = monkey.pass_if_true
+                    else:
+                        new_monkey = monkey.pass_if_false
+                    
                 monkeys[new_monkey].items.append(new)
+
             monkey.items = []
 
     list_of_inspections = []
@@ -122,8 +130,6 @@ def part2(data):
     print(list_of_inspections)
 
     return list_of_inspections[0] * list_of_inspections[1]
-
-    return
     
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
@@ -135,8 +141,17 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
+    now = datetime.now()
+    start_time = now.strftime("%H:%M:%S")
+
     for path in sys.argv[1:]:
         print(f"{path}:")
         puzzle_input = pathlib.Path(path).read_text().strip()
         solutions = solve(puzzle_input)
         print("\n".join(str(solution) for solution in solutions))
+
+    now = datetime.now()
+    end_time = now.strftime("%H:%M:%S")
+
+    print("start time =", start_time)
+    print("end time =", end_time)

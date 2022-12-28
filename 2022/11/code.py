@@ -101,6 +101,7 @@ def part2(data):
     for round in range(10000):
         print("round: ", round+1)
         for monkey in monkeys:
+            print("items: ", monkey.items)
             for item in monkey.items:
                 monkey.inspections += 1
                 old = item

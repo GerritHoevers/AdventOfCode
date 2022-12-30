@@ -16,11 +16,7 @@ class Monkey:
 def parse(puzzle_input):
     """Parse input"""
 
-    return [text for text in puzzle_input.split('\n')]
-
-def part1(data):
-    """Solve part 1"""
-    print("\nsolving part 1 ...")
+    data = [text for text in puzzle_input.split('\n')]
 
     #read in monkey data
     monkeys = []
@@ -45,6 +41,14 @@ def part1(data):
         monkeys.append(monkey)
 
         line_nr += 3
+
+    return monkeys
+
+def part1(data):
+    """Solve part 1"""
+    print("\nsolving part 1 ...")
+
+    monkeys = data
 
     for round in range(20):
         print("round: ", round+1)
@@ -73,31 +77,9 @@ def part2(data):
     """Solve part 2"""
     print("\nsolving part 2 ...")
 
-#read in monkey data
-    monkeys = []
-    line_nr = 1
-    while line_nr < len(data):
-        text = data[line_nr]
-        items = [ int(i) for i in (text[17:].split(",")) ]
-        line_nr += 1
-        text = data[line_nr]
-        func = text[19:]
-        line_nr += 1
-        text = data[line_nr]
-        divisor = int(text[21:])
-        line_nr += 1
-        text = data[line_nr]
-        pass_if_true = int(text[29:])
-        line_nr += 1
-        text = data[line_nr]
-        pass_if_false = int(text[30:])
-
-        monkey = Monkey(items, func, divisor, pass_if_true, pass_if_false)
-        monkeys.append(monkey)
-
-        line_nr += 3
-
-    for round in range(1000):
+    monkeys = data
+    
+    for round in range(20):
         print("round: ", round+1)
         for monkey in monkeys:
             #print("items: ", monkey.items)

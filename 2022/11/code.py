@@ -5,9 +5,11 @@ import sys
 import copy
 from datetime import datetime
 
+lcm = 9699690
 class Monkey:
-    def __init__(self, items, func, divisor, pass_if_true, pass_if_false):
+    def __init__(self, num, items, func, divisor, pass_if_true, pass_if_false):
         self.inspections = 0
+        self.num = num
         self.items = items
         self.func = func
         self.divisor = divisor
@@ -20,9 +22,12 @@ def parse(puzzle_input):
     data = [text for text in puzzle_input.split('\n')]
 
     #read in monkey data
-    monkeys1 = []
-    line_nr = 1
+    monkeys = []
+    line_nr = 0
     while line_nr < len(data):
+        text = data[line_nr]
+        num = int(text[7])
+        line_nr += 1
         text = data[line_nr]
         items = [ int(i) for i in (text[17:].split(",")) ]
         line_nr += 1
@@ -38,12 +43,12 @@ def parse(puzzle_input):
         text = data[line_nr]
         pass_if_false = int(text[30:])
 
-        monkey = Monkey(items, func, divisor, pass_if_true, pass_if_false)
-        monkeys1.append(monkey)
+        monkey = Monkey(num, items, func, divisor, pass_if_true, pass_if_false)
+        monkeys.append(monkey)
 
-        line_nr += 3
+        line_nr += 2
 
-    return monkeys1
+    return monkeys
 
 def part1(data):
     """Solve part 1"""
@@ -81,17 +86,21 @@ def part2(data):
 
     monkeys = copy.deepcopy(data)
 
-    for round in range(1000):
+    for round in range(10000):
         print("round: ", round+1)
         for monkey in monkeys:
             for item in monkey.items:
+                old_monkey = monkey.num
                 monkey.inspections += 1
                 old = item
                 new = eval(monkey.func)
+
                 if new % monkey.divisor == 0:
-                    new_monkey = monkey.pass_if_true
+                        new_monkey = monkey.pass_if_true
                 else:
                     new_monkey = monkey.pass_if_false
+
+                new = new % lcm
                 monkeys[new_monkey].items.append(new)
             monkey.items = []
 

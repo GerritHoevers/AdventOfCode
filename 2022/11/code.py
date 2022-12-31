@@ -6,6 +6,7 @@ import copy
 from datetime import datetime
 
 lcm = 9699690
+
 class Monkey:
     def __init__(self, num, items, func, divisor, pass_if_true, pass_if_false):
         self.inspections = 0
@@ -18,9 +19,7 @@ class Monkey:
 
 def parse(puzzle_input):
     """Parse input"""
-
     data = [text for text in puzzle_input.split('\n')]
-
     #read in monkey data
     monkeys = []
     line_nr = 0
@@ -56,8 +55,8 @@ def part1(data):
 
     monkeys = copy.deepcopy(data)
 
-    for round in range(20):
-        print("round: ", round+1)
+    for rounds in range(20):
+        print("round: ", rounds + 1)
         for monkey in monkeys:
             for item in monkey.items:
                 monkey.inspections += 1
@@ -86,8 +85,8 @@ def part2(data):
 
     monkeys = copy.deepcopy(data)
 
-    for round in range(10000):
-        print("round: ", round+1)
+    for rounds in range(10000):
+        print("round: ", rounds + 1)
         for monkey in monkeys:
             for item in monkey.items:
                 old_monkey = monkey.num

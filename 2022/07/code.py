@@ -26,11 +26,11 @@ def parse(puzzle_input):
     data = [text for text in puzzle_input.split('\n')]
 
     #create folder- and filestructure
-    nodes = [] #list of all nodes
+    nodes = []  # list of all nodes
     root = Folder('/', parent=None)
     nodes.append(root)
     current_node = root
-    line_number = 1 #skip line_number 0, it contains "$ cd /"
+    line_number = 1  # skip line_number 0, it contains "$ cd /"
     
     while line_number < len(data):
         values = data[line_number].split(' ')

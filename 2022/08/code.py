@@ -3,14 +3,14 @@
 import pathlib
 import sys
 import numpy as np
-from colorama import Cursor
+#from colorama import Cursor
 
 def parse(puzzle_input):
     """Parse input"""
 
     lines = [text for text in puzzle_input.split('\n')]
     size = len(lines)
-    grid = np.zeros((size, size)) #initialise grid with zeros
+    grid = np.zeros((size, size))  # initialise grid with zeros
     
     #fill grid with data from input file
     row = 0

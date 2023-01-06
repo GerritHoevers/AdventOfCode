@@ -1,6 +1,6 @@
 #--- Day 12: Hill Climbing Algorithm ---
 
-# N.B. code is not ready, solved by hanfd :-)
+# N.B. code is not ready, solved by hand :-)
 
 import pathlib
 import sys

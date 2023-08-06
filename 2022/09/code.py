@@ -7,18 +7,14 @@ import math
 
 def parse(puzzle_input):
     """Parse input"""
-
     return [text for text in puzzle_input.split('\n')]
 
 def part1(data):
     """Solve part 1"""
     print("\n\nsolving part 1 ...")
 
-    def magnitude(vector):
-        return math.sqrt(sum(pow(element, 2) for element in vector))
-
-    def update(pH, pT):
-        vec = pH - pT
+    def move(pH, pT):
+        vec = [ pH[0] - pT[0], pH[1] - pT[1] ]
         if (vec[0] == -1 and vec[1] == 2) or (vec[0] == -2 and vec[1] == 1):
             pT[0] -= 1
             pT[1] += 1
@@ -39,43 +35,41 @@ def part1(data):
             pT[1] -= 1
         elif (vec[0] == -2 and vec[1] == 0):
             pT[0] += -1
+
         return pT
 
-    posH = np.array([0, 0])
-    posT = np.array([0, 0])
-    positions = []
+    posH = [0, 0]
+    posT = [0, 0]
+    positions = set()
+    positions.add(tuple(posT))
 
     for line in data:
-        command = []
-        command.append(line[0])
-        command.append(int(line[1:]))
-        
-        dir = command[0]
-        dist = command[1]
+        dir = line[0]
+        dist = int(line[1:])
 
         if dir == 'L':
             for i in range(0, dist):
                 posH[0] -= 1
-                posT = update(posH, posT)
-                print(posH, posT)
-        
+                posT = move(posH, posT)
+                positions.add(tuple(posT))
+
         elif dir == 'U':
             for i in range(0, dist):
                 posH[1] += 1
-                posT = update(posH, posT)
-                print(posH, posT)
-
+                posT = move(posH, posT)
+                positions.add(tuple(posT))
+                
         elif dir == 'R':
             for i in range(0, dist):
                 posH[0] += 1
-                posT = update(posH, posT)
-                print(posH, posT)
+                posT = move(posH, posT)
+                positions.add(tuple(posT))
 
         elif dir == 'D':
             for i in range(0, dist):
                 posH[1] -= 1
-                posT = update(posH, posT)
-                print(posH, posT)
+                posT = move(posH, posT)
+                positions.add(tuple(posT))
 
     return len(positions)
 
@@ -83,19 +77,81 @@ def part2(data):
     """Solve part 2"""
     print("\n\nsolving part 2 ...")
 
-    
+    def move(pH, pT):
+        vec = [ pH[0] - pT[0], pH[1] - pT[1] ]
+        if (vec[0] == -1 and vec[1] == 2) or (vec[0] == -2 and vec[1] == 1) or (vec[0] == -2 and vec[1] == 2):
+            pT[0] -= 1
+            pT[1] += 1
+        elif (vec[0] == 1 and vec[1] == 2) or (vec[0] == 2 and vec[1] == 1)  or (vec[0] == 2 and vec[1] == 2):
+            pT[0] += 1
+            pT[1] += 1
+        elif (vec[0] == 1 and vec[1] == -2) or (vec[0] == 2 and vec[1] == -1)  or (vec[0] == 2 and vec[1] == -2):
+            pT[0] += 1
+            pT[1] -= 1
+        elif (vec[0] == -1 and vec[1] == -2) or (vec[0] == -2 and vec[1] == -1)  or (vec[0] == -2 and vec[1] == -2):
+            pT[0] -= 1
+            pT[1] -= 1
+        elif (vec[0] == 0 and vec[1] == 2):
+            pT[1] += 1
+        elif (vec[0] == 2 and vec[1] == 0):
+            pT[0] += 1
+        elif (vec[0] == 0 and vec[1] == -2):
+            pT[1] -= 1
+        elif (vec[0] == -2 and vec[1] == 0):
+            pT[0] += -1
 
-    return
+        return pT
+
+    dim = 10
+    head = 0
+    tail = dim - 1
+    knots = []
+    for i in range(dim):
+        knots.append([0, 0])
+    positions = set()
+    positions.add(tuple(knots[tail]))
+
+    for line in data:
+        dir = line[0]
+        dist = int(line[1:])
+
+        if dir == 'L':
+            for i in range(0, dist):
+                knots[head][0] -= 1
+                for i in range(1, dim):
+                    knots[i] = move(knots[i-1], knots[i])
+                positions.add(tuple(knots[tail]))
+
+        elif dir == 'U':
+            for i in range(0, dist):
+                knots[head][1] += 1
+                for i in range(1, dim):
+                    knots[i] = move(knots[i-1], knots[i])
+                positions.add(tuple(knots[tail]))
+                                
+        elif dir == 'R':
+            for i in range(0, dist):
+                knots[head][0] += 1
+                for i in range(1, dim):
+                    knots[i] = move(knots[i-1], knots[i])
+                positions.add(tuple(knots[tail]))
+
+        elif dir == 'D':
+            for i in range(0, dist):
+                knots[head][1] -= 1
+                for i in range(1, dim):
+                    knots[i] = move(knots[i-1], knots[i])
+                positions.add(tuple(knots[tail]))
+
+    return len(positions)
     
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
     data = parse(puzzle_input)
-    print(data)
     solution1 = part1(data)
     solution2 = part2(data)
 
     return solution1, solution2
-
 
 if __name__ == "__main__":
     for path in sys.argv[1:]:
